@@ -1,9 +1,20 @@
 #ifndef CORE
 #define CORE
+#include <string>
+#define AlphaSize
 
-typedef struct {
-	TrieNode filhos[127];
-	int terminator = 0;
-} TrieNode;
+struct TrieNode{
+	TrieNode* filhos[128];
+	int terminator;
+
+	inline
+	TrieNode():terminator {0}{
+	}
+};
+
+void inserir(TrieNode*, std::string);
+
+int buscarContar(TrieNode*, std::string);
+
 
 #endif

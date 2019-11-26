@@ -1,7 +1,7 @@
 IDIR =./include
 SRC =./src/
 CC=g++
-FLAGS=
-
+FLAGS=-std=c++11
+NAME=Analiser
 all:
-	${CC} -o multCore ${SRC}* -I ${IDIR} ${FLAGS}
+	${CC} -o ${NAME} ${SRC}* -I ${IDIR} ${FLAGS}
