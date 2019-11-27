@@ -2,23 +2,22 @@
 #include <iostream>
 
 
-void inserir(TrieNode* root, std::string key){
-	TrieNode* it = root;
-	for (int i = 0; i < key.length(); i++){
-		char c = key[i];
-		if ( it->filhos[c] == nullptr)
-			it->filhos[c] = new TrieNode();
-		it = it->filhos[c];
+void read(CPU* cpu, int addr, int core)
+{
+	if (addr < 0 or addr > 79)
+		return;
+	int info = mainMem[addr];
+	if (cpu->l2[info%40] != -1;){
+		cout << "Substituindo posiçao " << info%40 << " por mapeamento direto!
+               \n saindo:" <<cpu->l2[info%40] << " entrando :" << info << endl;
+		cpu->l2[info%40] = info;
 	}
-	it->terminator++;
+	else {
+		cout << "Escrevendo em lacal vazio " << info % 40
+			 << "informação: " << info
+	}	
 }
 
-int buscarContar(TrieNode* root, std::string key){
-	TrieNode* it = root;
-	for (char c : key){
-		if (it->filhos[c] == nullptr)
-			return 0;
-		it = it->filhos[c];
-	}
-	return it->terminator;
+void write(CPU*, int addr, int core, int info)
+{
 }

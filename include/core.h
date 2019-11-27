@@ -2,19 +2,23 @@
 #define CORE
 #include <string>
 #define AlphaSize
+#define memSize 80
 
-struct TrieNode{
-	TrieNode* filhos[128];
-	int terminator;
+int mainMem[80];
 
-	inline
-	TrieNode():terminator {0}{
-	}
+struct Core {
+	int l1[20];
 };
 
-void inserir(TrieNode*, std::string);
+struct CPU{
+	Core core1;
+	Core Core2;
+	int l2[40];
+};
 
-int buscarContar(TrieNode*, std::string);
+void read(CPU*, int addr, int core);
+
+void write(CPU*, int addr, int core, int info);
 
 
 #endif

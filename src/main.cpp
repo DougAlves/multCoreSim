@@ -1,50 +1,54 @@
 #include <iostream>
 #include <fstream>
 #include <sstream>
+#include <ostream>
 #include "../include/core.h"
 
 using namespace std;
-void replaceComa(std::string & str)
+void simulate(CPU* cpus, ostream & os, int qCores)
 {
-	for(int i = 0; i < str.length(); i++){
-		str[i] = str[i] == ',' ? ' ' : str[i];
+	string linha;
+	while (getline(os, linha)){
+		sstream line(linha);
+		string comando;
+		line>>comando;
+		int addr, core;
+		line>>addr>>core;
+		int cPU = core / 2;
+		if (comando == "read"){
+			read(&cpus[cPU], addr, core);
+		}
+		else {
+			int info;
+			line>> info;
+			write(&cpus[cPU], addr, core, info);
+		}
 	}
 }
 
-TrieNode* buildTrie(char* path)
+CPU* buildTrie(char* path)
 {
-	TrieNode* root = new TrieNode();
-	std::fstream file;
-	file.open(path);
-	std::string line;
-	while (getline(file, line)){
-		if (line[0] == '#')
-			continue;
-		if (line.back() == ':'){
-			std::string test = line.substr(0, line.length() - 1);
-			std::cout << test << std::endl;
-			inserir(root,test);
-			continue;
-		}
-		cout << line << endl;
-		replaceComa(line);
-		cout << line << endl;
-		std::stringstream st(line);
-		string inst;
-		while (st>>inst){
-			if (inst[0] >= '0' && inst[0] <='9')
-				continue;
-			inserir(root, inst);
-			std::cout << inst <<std::endl;
-		}
-	}
-	return root;
 }
 
 
 int main(int argc, char** argv){
-	TrieNode* pedro = buildTrie(argv[1]);
-	cout << buscarContar(pedro, "add");
+	ostream stream;
+	if(argv == nullptr)
+		stream = cin;
+	else {
+		fstream file;
+		file.open(argv[1]);
+		stream = file;
+	}
+	int qtdCores;
+
+	stream>>qtdCores;
+	if (qtdCores % 2 !=0)
+		return 1;
+
+	CPU* cpus = new CPU[qtdCores];
+	simulate(cpus, stream, qtdCores);
+	stream.close();
 	return 0;
 }
 

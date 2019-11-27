@@ -1,1 +1,1 @@
-# Projeto 1: analisador de código assembly
+# Projeto n: Simulador de memória em processador multcore
