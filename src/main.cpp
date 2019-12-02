@@ -6,31 +6,61 @@
 
 using namespace std;
 
+void
+printState(CPU* cpus, ofstream & os, int i, int qCores, int* mainMem)
+{
+	os << "==================================================" <<endl;
+	os << "Interação "<< i << endl;
+	os << "Memoria Principal : "<< endl;;
+	for (int j = 0; j < memSize; j++)
+		os << mainMem[j] << " ";
+	os << endl;
+	for (int j = 0; j < qCores; ++j){
+		os << "CPU " << j << " cache l2"<< endl;
+		for (int l = 0; l < l2Size ; ++l)
+			os << cpus[i].l2[l] << " ";
+		os << endl << "Core 1 cache l1 "<< endl;
+		for (int l = 0; l < l1Size ; ++l)
+			os << cpus[i].core1.l1[l] << " ";
+		os << endl << "Core 2 cache l1 "<< endl;
+		for (int l = 0; l < l1Size ; ++l)
+			os << cpus[i].core2.l1[l] << " ";
+		os << endl;
+	}
+	os << "==================================================" <<endl;
+}
 
 void
 simulate(CPU* cpus,istream & stream, int qCores, int* mainMem)
 {
 	string linha;
+	ofstream log("./log.txt");
+	int i = 0;
 	while (getline(stream, linha)){
 		stringstream line(linha);
 		string comando;
 		line>>comando;
+		// read addr core 
 		int addr, core;
-		line>>addr>>core;
+		line>>addr;
 		if (comando == "read"){
+			line>>core;
 			int cPU = core / 2;
 			read(&cpus[cPU], addr, core, mainMem);
 		}
 		else {
+			// write addr core info
 			int info;
 			line>> info;
-			write(cpus, addr, info, qCores, mainMem);
+			write(cpus, addr, info, qCores / 2 , mainMem);
 		}
+		printState(cpus, log, i++, qCores, mainMem);
 	}
 }
 
+
 CPU*
-buildChip(int qCores, int* mainMem)
+buildChip(int qCores, int *& mainMem)
 {
 	mainMem = new int[memSize];
 	CPU* chip = new CPU[qCores/2];
@@ -58,8 +88,9 @@ main(int argc, char** argv){
 		return 1;
 	int* mainMem;
 	CPU* cpus = buildChip(qtdCores, mainMem);
-	if(argv == nullptr)
+	if(argv == nullptr){
 		simulate(cpus, cin, qtdCores, mainMem);
+	}
 	else {
 		ifstream file;
 		file.open(argv[1]);
