@@ -1,6 +1,6 @@
 read 20 3
-write 20 3 35
-write 21 2 36
-write 24 3 39
+write 20 35
+write 21 36
+write 24 39
 read 26 2 
-write 28 1 43
+write 28 43

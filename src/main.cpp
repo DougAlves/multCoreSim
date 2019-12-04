@@ -7,7 +7,7 @@
 using namespace std;
 
 void
-printState(CPU* cpus, ofstream & os, int i, int qCores, int* mainMem)
+printState(const CPU* cpus, ofstream & os, int i, int qCores, int* mainMem)
 {
 	os << "==================================================" <<endl;
 	os << "Interação "<< i << endl;
@@ -38,6 +38,7 @@ simulate(CPU* cpus,istream & stream, int qCores, int* mainMem)
 	int i = 0;
 	while (getline(stream, linha)){
 		stringstream line(linha);
+		cout << linha << endl;
 		string comando;
 		line>>comando;
 		// read addr core 
@@ -46,7 +47,7 @@ simulate(CPU* cpus,istream & stream, int qCores, int* mainMem)
 		if (comando == "read"){
 			line>>core;
 			int cPU = core / 2;
-			read(&cpus[cPU], addr, core, mainMem);
+			read(cpus[cPU], addr, core, mainMem);
 		}
 		else {
 			// write addr core info
@@ -54,7 +55,7 @@ simulate(CPU* cpus,istream & stream, int qCores, int* mainMem)
 			line>> info;
 			write(cpus, addr, info, qCores / 2 , mainMem);
 		}
-		printState(cpus, log, i++, qCores, mainMem);
+		printState(cpus, log, ++i, qCores, mainMem);
 	}
 }
 

@@ -25,13 +25,13 @@ struct CPU{
    passando também pela l2 da CPU em que o core está
  */
 void
-read(CPU*, int addr, int core, int*& mainMem);
+read(CPU&, int addr, int core, int* mainMem);
 
 /**
    Função que escreve na mémoria principal e atualiza nas mémorias cache todas as referências a informação antiga
  */
 void
-write(CPU*, int addr, int info, int qCores,int*& mainMem);
+write(CPU*, int addr, int info, int qCores,int* mainMem);
 
 
 #endif
